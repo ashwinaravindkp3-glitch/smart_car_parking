@@ -1,0 +1,20 @@
+# Raspberry Pi Smart Parking System - Python Dependencies
+
+# MQTT Client
+paho-mqtt==1.6.1
+
+# Computer Vision
+opencv-python==4.8.1.78
+opencv-contrib-python==4.8.1.78
+
+# QR Code Detection
+pyzbar==0.1.9
+
+# JSON Processing
+# (built-in json module is sufficient)
+
+# GPIO Control (Raspberry Pi specific)
+RPi.GPIO==0.7.1
+
+# Optional: System monitoring
+psutil==5.9.6
