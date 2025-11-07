@@ -7,6 +7,7 @@ Complete IoT-based smart parking solution using Raspberry Pi with dual cameras, 
 - **Dual Camera QR Detection**: Entry and exit cameras for automated vehicle identification
 - **Dual Servo Barriers**: Independent control of entry and exit gates with auto-close
 - **6 IR Sensors**: Real-time parking slot occupancy monitoring (mapped to 20 virtual slots)
+- **I2C LCD Display**: Welcome messages with slot numbers and thank you messages
 - **MQTT Integration**: Cloud-based communication via HiveMQ
 - **Real-time Updates**: Instant slot status publishing
 - **Remote Control**: Open barriers via MQTT commands
@@ -34,6 +35,12 @@ Complete IoT-based smart parking solution using Raspberry Pi with dual cameras, 
   - Recommended: HC-SR04 or similar
   - Connected to GPIO pins: 17, 27, 22, 23, 24, 25
 
+### I2C LCD Display
+- 1x 16x2 or 20x4 I2C LCD Display
+  - With PCF8574 I2C backpack (most common)
+  - Default address: 0x27 or 0x3F
+  - Connected via I2C (SDA/SCL)
+
 ### Additional Components
 - Breadboard or PCB for connections
 - Jumper wires
@@ -54,6 +61,8 @@ IR Sensor 3         | GPIO 22  | Pin 15
 IR Sensor 4         | GPIO 23  | Pin 16
 IR Sensor 5         | GPIO 24  | Pin 18
 IR Sensor 6         | GPIO 25  | Pin 22
+I2C LCD SDA         | GPIO 2   | Pin 3
+I2C LCD SCL         | GPIO 3   | Pin 5
 ```
 
 ### Servo Wiring
@@ -73,6 +82,18 @@ IR Sensor
 ├── GND → GND
 └── OUT → GPIO Pin (see table above)
 ```
+
+### I2C LCD Display Wiring
+
+```
+I2C LCD (with PCF8574 backpack)
+├── VCC → 5V
+├── GND → GND
+├── SDA → GPIO 2 (Physical Pin 3)
+└── SCL → GPIO 3 (Physical Pin 5)
+```
+
+**Note:** I2C address is usually 0x27 or 0x3F. Use `i2cdetect -y 1` to find your display's address.
 
 ## 📥 Installation
 
@@ -98,8 +119,18 @@ sudo apt-get install -y libzbar0 libzbar-dev
 # GPIO support
 sudo apt-get install -y python3-rpi.gpio
 
+# I2C support for LCD display
+sudo apt-get install -y i2c-tools python3-smbus
+
 # Camera support
 sudo apt-get install -y v4l-utils
+```
+
+**Enable I2C Interface:**
+```bash
+sudo raspi-config
+# → Interface Options → I2C → Enable
+# Reboot after enabling
 ```
 
 ### 3. Clone Repository
@@ -137,9 +168,23 @@ IR_SENSOR_PINS = [17, 27, 22, 23, 24, 25]
 
 # Virtual slot mapping (which real sensors map to which slot numbers)
 REAL_SLOT_MAPPING = [2, 5, 8, 12, 15, 18]
+
+# I2C LCD Display configuration
+LCD_I2C_ADDRESS = 0x27  # Use i2cdetect to find your address
+LCD_COLS = 16           # 16 for 16x2, 20 for 20x4
+LCD_ROWS = 2            # 2 for 16x2, 4 for 20x4
 ```
 
-### 6. Test Cameras
+### 6. Test I2C Display
+
+```bash
+# Detect I2C devices (find LCD address)
+sudo i2cdetect -y 1
+
+# You should see your LCD at address 0x27 or 0x3F
+```
+
+### 7. Test Cameras
 
 ```bash
 # List connected cameras

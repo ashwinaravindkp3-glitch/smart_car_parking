@@ -16,5 +16,11 @@ pyzbar==0.1.9
 # GPIO Control (Raspberry Pi specific)
 RPi.GPIO==0.7.1
 
+# I2C LCD Display
+RPLCD==1.3.1
+
+# I2C communication (usually pre-installed on Raspberry Pi OS)
+smbus2==0.4.3
+
 # Optional: System monitoring
 psutil==5.9.6

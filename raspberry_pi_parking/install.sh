@@ -40,10 +40,12 @@ sudo apt-get install -y \
     python3-dev \
     python3-opencv \
     python3-rpi.gpio \
+    python3-smbus \
     libopencv-dev \
     libzbar0 \
     libzbar-dev \
     v4l-utils \
+    i2c-tools \
     git
 
 echo ""

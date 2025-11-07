@@ -61,6 +61,27 @@ TOTAL_SLOTS = 20
 # IR sensor logic (True if LOW = occupied, False if HIGH = occupied)
 IR_ACTIVE_LOW = True
 
+# ==================== I2C LCD DISPLAY CONFIGURATION ====================
+# I2C LCD Display settings
+ENABLE_DISPLAY = True
+
+# I2C address (common addresses: 0x27, 0x3F)
+# Use 'i2cdetect -y 1' command to find your display address
+LCD_I2C_ADDRESS = 0x27
+
+# I2C port (1 for Raspberry Pi 2/3/4, 0 for older models)
+LCD_I2C_PORT = 1
+
+# LCD expander type ('PCF8574' is most common)
+LCD_I2C_EXPANDER = 'PCF8574'
+
+# LCD dimensions
+LCD_COLS = 16  # Number of columns (16 or 20)
+LCD_ROWS = 2   # Number of rows (2 or 4)
+
+# Message display duration (seconds)
+LCD_MESSAGE_DURATION = 5
+
 # ==================== ADMIN WEBSITE ====================
 ADMIN_WEBSITE_URL = "https://park-sensei-1-cbenp2ebs2500.replit.app/"
 
@@ -79,3 +100,4 @@ ENABLE_CAMERAS = True
 ENABLE_BARRIERS = True
 ENABLE_IR_SENSORS = True
 ENABLE_MQTT = True
+ENABLE_DISPLAY = True

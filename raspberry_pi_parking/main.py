@@ -15,6 +15,7 @@ from mqtt_handler import MQTTHandler
 from camera_handler import CameraHandler
 from barrier_handler import BarrierHandler
 from slot_handler import SlotHandler
+from display_handler import DisplayHandler
 
 
 class SmartParkingSystem:
@@ -28,6 +29,7 @@ class SmartParkingSystem:
         self.cameras = None
         self.barriers = None
         self.slots = None
+        self.display = None
 
         # System state
         self.running = False
@@ -94,6 +96,15 @@ class SmartParkingSystem:
         if self.barriers:
             self.barriers.open_barrier(barrier_type, user_id=user_id)
 
+        # Display appropriate message
+        if self.display:
+            if barrier_type == "entry":
+                # Show welcome message with slot number
+                self.display.show_welcome(slot_number, user_id)
+            elif barrier_type == "exit":
+                # Show thank you message
+                self.display.show_thank_you()
+
     def on_slot_state_change(self, slot_states):
         """
         Callback when IR sensor states change
@@ -128,6 +139,13 @@ class SmartParkingSystem:
         self.mqtt = MQTTHandler(on_door_command_callback=self.on_door_command)
         if not self.mqtt.setup():
             self.logger.error("Failed to setup MQTT handler")
+            return False
+
+        # Initialize Display Handler
+        self.logger.info("Setting up display handler...")
+        self.display = DisplayHandler()
+        if not self.display.setup():
+            self.logger.error("Failed to setup display handler")
             return False
 
         # Initialize Barrier Handler
@@ -244,6 +262,9 @@ class SmartParkingSystem:
 
         if self.barriers:
             self.barriers.cleanup()
+
+        if self.display:
+            self.display.cleanup()
 
         if self.mqtt:
             self.mqtt.cleanup()
