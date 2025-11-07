@@ -3,7 +3,7 @@
 #include "gate_handler.h"
 
 // --- Pin Definitions ---
-#define SERVO_PIN 2
+#define SERVO_PIN 12
 
 // --- Constants ---
 const long GATE_OPEN_DURATION = 5000; // Keep gate open for 5 seconds
